@@ -1,3 +1,6 @@
+require 'json'
+require 'net/http'
+
 #life calculator
 def years_alive(birthday)
   #days in the months array
@@ -58,6 +61,8 @@ def years_alive(birthday)
  leap_years=((years_age/4)/365).floor
   #total of everything
  return days_age+years_age+leap_years
+
+
 end
 
 
@@ -89,3 +94,17 @@ end
  def to_pig_latin(string)
    string.split.collect{|word| piglatinize(word)}.join(" ")
  end
+ 
+ 
+#to get a GIF
+def get_gif(search_term)
+  request_string="http://api.giphy.com/v1/gifs/search?q=#{search_term.gsub(" ", "+")}&api_key=dc6zaTOxFJmzC"
+  
+  sample_uri=URI(request_string)
+  sample_response=Net::HTTP.get(sample_uri)
+  sample_parsed_response=JSON.parse(sample_response)
+  return sample_parsed_response["data"][0]["images"]["fixed_height"]["url"]
+  
+end
+
+puts get_gif("hilarious pistachios")
